@@ -28,7 +28,7 @@ const upload = multer({
 			cb(null, file.originalname);
 		},
 	}),
-}).array('input_name', 1); // replace `input_name` with your field name
+}).array('upload', 1); // replace `upload` with your field name and also adapt in your request (upload is the field in the examples provided
 
 
 app.post('/upload', (req,res, next) => {
