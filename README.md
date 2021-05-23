@@ -15,6 +15,8 @@ $ npm install
 
 This is a micro-service that you can start to post a file to in order to upload it to Digitalocean Object Storage. It will return the file name along with a success message if the upload was a success.
 
+It also includes a mode for local storage of files in /uploads. The endpoint for this is `http://localhost:3001/upload-local` and accepts a single file field called `upload`.
+
 ## Configurations
 
 You will have to set the environment variables for AWS in order for your application to authenticate properly - as such:
