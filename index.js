@@ -2,6 +2,7 @@ require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
 const app = express();
+const path = require('path');
 
 const aws = require('aws-sdk');
 const multer = require('multer');
@@ -30,6 +31,35 @@ const upload = multer({
 	}),
 }).array('input_name', 1); // replace `input_name` with your field name
 
+const storage = multer.diskStorage({
+	destination: function(req, file, cb) {
+		cb(null, 'uploads/');
+	},
+
+	// By default, multer removes file extensions so let's add them back
+	filename: function(req, file, cb) {
+		cb(null, file.fieldname + '-' + Date.now() + path.extname(file.originalname));
+	}
+});
+
+app.post('/upload-local', (req, res) => {
+	let storeLocal = multer({
+		storage: storage,
+	}).single('upload');
+
+	storeLocal(req, res, (err) => {
+		if(err){
+			return res.json({
+				success: false
+			});
+		}
+
+		res.json({
+			success: true,
+			file: req.file.path
+		});
+	});
+});
 
 app.post('/upload', (req,res, next) => {
 
@@ -52,5 +82,5 @@ app.post('/upload', (req,res, next) => {
 });
 
 app.listen(3001,function() {
-	console.log('Started server on port 3030');
+	console.log('Started server on port 3001');
 });
